@@ -1,4 +1,5 @@
 import { Button, Card } from "react-bootstrap";
+import {useShoppingCard} from '../context/ShoppingCard'
 
 type itemProps = {
   id: number;
@@ -7,7 +8,8 @@ type itemProps = {
   price: number;
 };
 export default function SingleItem({ id, imgUrl, price, name }: itemProps) {
-  const sum = 0;
+  const {getCardSum, increaseSum,decreaseSum, removeSum}= useShoppingCard()
+  const sum = getCardSum(id);
   return (
     <Card style={{ width: "20rem", margin: "auto" }}>
       <Card.Img
@@ -22,7 +24,7 @@ export default function SingleItem({ id, imgUrl, price, name }: itemProps) {
           <span className="ms-2 text-muted">${price}</span>
         </Card.Title>
         <div>
-          {sum === 0 ? <Button variant="warning" className="w-100">+ Add to card</Button> : (
+          {sum === 0 ? <Button variant="warning" className="w-100" onClick={() =>increaseSum(id)}>+ Add to card</Button> : (
             <div
               className="d-flex align-items-center flex-column"
               style={{ gap: ".5rem" }}
@@ -31,14 +33,14 @@ export default function SingleItem({ id, imgUrl, price, name }: itemProps) {
                 className="d-flex align-items-center justify-content-center"
                 style={{ gap: ".5rem" }}
               >
-                <Button >-</Button>
+                <Button onClick={() =>decreaseSum(id)}>-</Button>
                 <div>
                   <span className="fs-3">{sum}</span> in cart
                 </div>
-                <Button  >+</Button>
+                <Button  onClick={() =>increaseSum(id)}>+</Button>
               </div>
               <Button
-               
+               onClick={() =>removeSum(id)}
                 variant="danger"
                 size="sm"
               >
